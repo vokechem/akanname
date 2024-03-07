@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akan Name Calculator</title>
+    <style>
+        /* Add your custom CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Akan Name Calculator</h1>
+    <form id="akanForm">
+        <label for="birthday">Enter your birthday:</label><br>
+        <input type="text" id="birthday" name="birthday" placeholder="YYYY-MM-DD" required><br>
+        
+        <label for="gender">Select your gender:</label><br>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+        
+        <button type="button" onclick="calculateAkanName()">Calculate Akan Name</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateAkanName() {
+            const birthdayInput = document.getElementById('birthday').value;
+            const genderInput = document.getElementById('gender').value;
+
+            // Validate the date format
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!dateRegex.test(birthdayInput)) {
+                alert("Please enter a valid date in the format YYYY-MM-DD.");
+                return;
+            }
+
+            // Split the birthday string into year, month, and day
+            const [year, month, day] = birthdayInput.split('-');
+            console.log("Year:", year, "Month:", month, "Day:", day);
+
+            // Validate the month and day
+            if (month <= 0 || month > 12) {
+                alert("Please enter a valid month (1-12).");
+                return;
+            }
+            if (day <= 0 || day > 31) {
+                alert("Please enter a valid day (1-31).");
+                return;
+            }
+
+            // Convert strings to integers
+            const birthday = { year: parseInt(year), month: parseInt(month), day: parseInt(day) };
+
+            // Function to calculate the day of the week
+            function calculateDayOfWeek(birthday) {
+                const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const cc = Math.floor(birthday.year / 100);
+                const yy = birthday.year % 100;
+                const mm = birthday.month;
+                const dd = birthday.day;
+                const dayIndex = (Math.floor(cc / 4) - 2 * cc - 1 + Math.floor(5 * yy / 4) + Math.floor(26 * (mm + 1) / 10) + dd) % 7;
+                return daysOfWeek[dayIndex];
+            }
+
+            // Function to get Akan name based on gender and day of the week
+            function getAkanName(birthday, gender) {
+                const dayOfWeek = calculateDayOfWeek(birthday);
+                console.log("Day of the week:", dayOfWeek);
+                let akanName;
+
+                if (gender === "male") {
+                    switch (dayOfWeek) {
+                        case "Sunday":
+                            akanName = "Kwasi";
+                            break;
+                        case "Monday":
+                            akanName = "Kwadwo";
+                            break;
+                        case "Tuesday":
+                            akanName = "Kwabena";
+                            break;
+                        case "Wednesday":
+                            akanName = "Kwaku";
+                            break;
+                        case "Thursday":
+                            akanName = "Yaw";
+                            break;
+                        case "Friday":
+                            akanName = "Kofi";
+                            break;
+                        case "Saturday":
+                            akanName = "Kwame";
+                            break;
+                        default:
+                            akanName = "Akan name not found";
+                    }
+                } else if (gender === "female") {
+                    switch (dayOfWeek) {
+                        case "Sunday":
+                            akanName = "Akosua";
+                            break;
+                        case "Monday":
+                            akanName = "Adwoa";
+                            break;
+                        case "Tuesday":
+                            akanName = "Abenaa";
+                            break;
+                        case "Wednesday":
+                            akanName = "Akua";
+                            break;
+                        case "Thursday":
+                            akanName = "Yaa";
+                            break;
+                        case "Friday":
+                            akanName = "Afua";
+                            break;
+                        case "Saturday":
+                            akanName = "Ama";
+                            break;
+                        default:
+                            akanName = "Akan name not found";
+                    }
+                } else {
+                    akanName = "Akan name not found";
+                }
+
+                return akanName;
+            }
+
+            // Get the Akan name
+            const akanName = getAkanName(birthday, genderInput);
+
+            // Display the result
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<p>Your Akan name is: ${akanName}</p>`;
+        }
+    </script>
+</body>
+</html>
